@@ -28,8 +28,9 @@ desc 'Run all travis env tasks locally'
 task :travis do
   require 'YAML'
   travis = YAML.load_file('.travis.yml')
-  travis['env'].each do |env|
-    arg = env.split('=')[1]
+  travis['matrix']['include'].each do |matrix|
+    env = matrix['env']
+    arg = env.split('=')[1..-1].join('=')
     puts "\n" + ('-'*80) + "\n\n"
     sh "rake #{arg}"
   end
